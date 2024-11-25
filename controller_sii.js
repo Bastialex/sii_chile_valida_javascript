@@ -8,7 +8,7 @@ const fetch = require('node-fetch');
 const cheerio = require('cheerio');//Tener instalado el cheerio es requisito [https://www.npmjs.com/package/cheerio]
 
 async function fetchCaptcha() {
-    /*Vemos que la página del SII maneja el codigo del captcha oculto en la misma página */
+    /*Vemos que la página del SII maneja el código del captcha oculto en la misma página */
     const response = await fetch('https://zeus.sii.cl/cvc_cgi/stc/CViewCaptcha.cgi', {
         method: 'POST',
         body: new URLSearchParams({ oper: 0 }),
@@ -23,7 +23,7 @@ async function fetchDatos(rut, dv) {
     try {
         const captcha = await fetchCaptcha();
         /*
-        Aqui procedemos a ingresar el codigo del captcha decifrado,
+        Aqui procedemos a ingresar el codigo del captcha descifrado,
         en conjunto con el rut y digito verificador
         */
         const response = await fetch('https://zeus.sii.cl/cvc_cgi/stc/getstc', {
@@ -57,8 +57,8 @@ async function fetchDatos(rut, dv) {
             .text()
             .replace('Fecha de Inicio de Actividades:', '')
             .trim();
-        const documentos = [];
-        let isDocumentos = false;
+        const documentos = [];//Lo usaremos para la lista de los documentos
+        let isDocumentos = false;//Con estas validaciones haremos "saltos" entre las filas de las tablas de la página
 
         for (let i = 0; i < rows.length; i++) {
             const node = rows[i];
